@@ -78,9 +78,12 @@ export default function Dashboard() {
               Click to start a conversation
             </p>
           </div>
-          <button className="px-4 py-2.5 bg-white text-black rounded-lg text-sm font-medium hover:bg-[#e5e5e5] transition-colors duration-150">
-            + Request Employee
-          </button>
+          <a
+            href="/employees/new"
+            className="px-4 py-2.5 bg-white text-black rounded-lg text-sm font-medium hover:bg-[#e5e5e5] transition-colors duration-150 inline-block"
+          >
+            + Create Employee
+          </a>
         </div>
 
         {/* Employee grid */}
