@@ -1,28 +1,47 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/lib/auth-context";
 
 export default function LoginPage() {
+  const router = useRouter();
+  const { user, login, loading: authLoading } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  // Redirect if already logged in
+  useEffect(() => {
+    if (user && !authLoading) {
+      router.push("/");
+    }
+  }, [user, authLoading, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError("");
     
-    // TODO: Implement actual auth
-    console.log("Login attempt:", { email, password });
-    
-    setTimeout(() => {
+    try {
+      await login(email, password);
+      router.push("/");
+    } catch (err) {
+      setError("Invalid email or password");
+    } finally {
       setLoading(false);
-      // Redirect to dashboard
-      window.location.href = "/";
-    }, 1000);
+    }
   };
+
+  if (authLoading) {
+    return (
+      <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center">
+        <div className="text-white">Loading...</div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center p-4">
@@ -107,6 +126,13 @@ export default function LoginPage() {
               </Link>
             </p>
           </div>
+        </div>
+
+        {/* Demo hint */}
+        <div className="mt-4 p-3 bg-[#141414] border border-[#1a1a1a] rounded-lg text-center">
+          <p className="text-xs text-[#525252]">
+            Demo: Enter any email/password to sign in
+          </p>
         </div>
 
         {/* Footer */}

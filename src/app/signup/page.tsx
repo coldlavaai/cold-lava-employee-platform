@@ -1,9 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/lib/auth-context";
 
 export default function SignupPage() {
+  const router = useRouter();
+  const { user, signup, loading: authLoading } = useAuth();
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
     companyName: "",
@@ -14,6 +18,13 @@ export default function SignupPage() {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  // Redirect if already logged in
+  useEffect(() => {
+    if (user && !authLoading) {
+      router.push("/");
+    }
+  }, [user, authLoading, router]);
 
   const updateField = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -46,18 +57,36 @@ export default function SignupPage() {
       return;
     }
 
+    if (formData.password.length < 8) {
+      setError("Password must be at least 8 characters");
+      return;
+    }
+
     setLoading(true);
     setError("");
     
-    // TODO: Implement actual signup
-    console.log("Signup attempt:", formData);
-    
-    setTimeout(() => {
+    try {
+      await signup({
+        companyName: formData.companyName,
+        subdomain: formData.subdomain,
+        email: formData.email,
+        password: formData.password,
+      });
+      router.push("/");
+    } catch (err) {
+      setError("Failed to create account");
+    } finally {
       setLoading(false);
-      // Redirect to dashboard
-      window.location.href = "/";
-    }, 1000);
+    }
   };
+
+  if (authLoading) {
+    return (
+      <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center">
+        <div className="text-white">Loading...</div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center p-4">
@@ -166,6 +195,7 @@ export default function SignupPage() {
                     className="w-full bg-[#141414] border border-[#1a1a1a] rounded-lg px-4 py-3 text-sm text-white placeholder-[#525252] focus:outline-none focus:border-[#2a2a2a] transition-colors"
                     placeholder="••••••••"
                   />
+                  <p className="text-xs text-[#525252] mt-1">Min 8 characters</p>
                 </div>
 
                 <div>
