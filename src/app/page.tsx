@@ -5,47 +5,40 @@ import Sidebar from "@/components/Sidebar";
 import EmployeeCard from "@/components/EmployeeCard";
 import StatsBar from "@/components/StatsBar";
 
-// Demo employees
+// Demo employees - real clients
 const employees = [
   {
     id: 1,
-    name: "Alex",
-    role: "Chases leads, generates quotes, and follows up with prospects automatically.",
-    category: "sales" as const,
-    avatar: "🎯",
+    name: "Design Assistant",
+    role: "Helps clients visualize interior designs, answers style questions, and manages project inquiries.",
+    category: "custom" as const,
+    avatar: "🏠",
     status: "online" as const,
     lastActive: "Just now",
-    messagestoday: 34,
+    messagestoday: 18,
+    company: "Donna",
   },
   {
     id: 2,
-    name: "Jordan",
-    role: "Schedules appointments, coordinates teams, and manages your calendar.",
+    name: "Harry",
+    role: "Manages client communications, handles inquiries, and coordinates business operations.",
     category: "ops" as const,
-    avatar: "📋",
+    avatar: "💼",
     status: "online" as const,
-    lastActive: "2m ago",
-    messagestoday: 28,
+    lastActive: "5m ago",
+    messagestoday: 34,
+    company: "LCB",
   },
   {
     id: 3,
-    name: "Sam",
-    role: "Handles customer questions, resolves issues, and maintains satisfaction.",
+    name: "Support Bot",
+    role: "Answers customer questions, provides information, and routes complex issues to the team.",
     category: "support" as const,
     avatar: "💬",
     status: "busy" as const,
-    lastActive: "5m ago",
+    lastActive: "2m ago",
     messagestoday: 52,
-  },
-  {
-    id: 4,
-    name: "Casey",
-    role: "Manages website content, writes blogs, and keeps your online presence fresh.",
-    category: "content" as const,
-    avatar: "✍️",
-    status: "offline" as const,
-    lastActive: "1h ago",
-    messagestoday: 12,
+    company: "LCB",
   },
 ];
 
@@ -91,7 +84,7 @@ export default function Dashboard() {
         </div>
 
         {/* Employee grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
           {employees.map((employee) => (
             <EmployeeCard
               key={employee.id}
@@ -114,7 +107,7 @@ export default function Dashboard() {
                   <div>
                     <h3 className="font-medium text-white">{selected.name}</h3>
                     <p className="text-[11px] text-[#525252] font-mono tracking-wide">
-                      {selected.category.toUpperCase()}
+                      {selected.company} · {selected.category.toUpperCase()}
                     </p>
                   </div>
                 </div>
@@ -145,7 +138,7 @@ export default function Dashboard() {
                   <div className="flex gap-3 justify-end">
                     <div className="bg-white text-black rounded-xl rounded-tr-sm px-4 py-3 max-w-md">
                       <p className="text-sm leading-relaxed">
-                        Can you follow up on the leads from yesterday?
+                        Can you check on recent customer inquiries?
                       </p>
                     </div>
                   </div>
@@ -157,7 +150,7 @@ export default function Dashboard() {
                     </div>
                     <div className="bg-[#141414] border border-[#1a1a1a] rounded-xl rounded-tl-sm px-4 py-3 max-w-md">
                       <p className="text-sm text-[#e5e5e5] leading-relaxed">
-                        On it. Found 12 leads that need follow-up. I'll draft personalized emails and send them for your approval. Should I prioritize by deal size or engagement level?
+                        On it. Found 8 new inquiries since yesterday. 3 are high priority — I'll draft responses and send them for your approval. Should I handle the routine ones automatically?
                       </p>
                     </div>
                   </div>

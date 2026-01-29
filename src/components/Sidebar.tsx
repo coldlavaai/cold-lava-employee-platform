@@ -3,14 +3,19 @@
 import { useState } from "react";
 
 const navItems = [
-  { name: "Dashboard", icon: "◉", href: "/" },
+  { name: "Dashboard", icon: "◉", href: "/", active: true },
   { name: "Employees", icon: "◎", href: "/employees" },
   { name: "Messages", icon: "◈", href: "/messages" },
   { name: "Analytics", icon: "◇", href: "/analytics" },
   { name: "Settings", icon: "◆", href: "/settings" },
 ];
 
-export default function Sidebar() {
+interface SidebarProps {
+  company?: string;
+  subdomain?: string;
+}
+
+export default function Sidebar({ company = "LCB", subdomain = "lcb" }: SidebarProps) {
   const [active, setActive] = useState("Dashboard");
 
   return (
@@ -52,13 +57,14 @@ export default function Sidebar() {
       {/* Company section */}
       <div className="p-4 border-t border-[#1a1a1a]">
         <div className="px-3 py-3">
+          <p className="text-[10px] text-[#525252] font-mono tracking-wider mb-2">LOGGED IN AS</p>
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded bg-white flex items-center justify-center text-black text-xs font-bold font-mono">
-              CL
+              {company.slice(0, 2).toUpperCase()}
             </div>
             <div className="flex-1">
-              <p className="text-sm font-medium text-white">Demo Company</p>
-              <p className="text-[11px] text-[#525252]">demo.coldlava.ai</p>
+              <p className="text-sm font-medium text-white">{company}</p>
+              <p className="text-[11px] text-[#525252]">{subdomain}.coldlava.ai</p>
             </div>
           </div>
         </div>
