@@ -4,6 +4,7 @@ import { useState } from "react";
 import Sidebar from "@/components/Sidebar";
 import EmployeeCard from "@/components/EmployeeCard";
 import StatsBar from "@/components/StatsBar";
+import ProtectedRoute from "@/components/ProtectedRoute";
 
 // Demo employees - real clients
 const employees = [
@@ -47,6 +48,7 @@ export default function Dashboard() {
   const selected = employees.find((e) => e.id === selectedEmployee);
 
   return (
+    <ProtectedRoute>
     <div className="min-h-screen bg-[#0a0a0a]">
       <Sidebar />
       
@@ -178,5 +180,6 @@ export default function Dashboard() {
         )}
       </main>
     </div>
+    </ProtectedRoute>
   );
 }
